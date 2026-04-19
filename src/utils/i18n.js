@@ -1,0 +1,70 @@
+// Multi-language support: English, Hindi, Tamil
+export const LANGUAGES = {
+  en: { label: 'English', flag: '🇬🇧' },
+  hi: { label: 'हिंदी',   flag: '🇮🇳' },
+  ta: { label: 'தமிழ்',   flag: '🇮🇳' },
+}
+
+export const T = {
+  en: {
+    signIn: 'Sign in to NexusAI', email: 'EMAIL', password: 'PASSWORD',
+    emailPh: 'dev@nexus.ai', passwordPh: '••••••••',
+    demoAccounts: 'DEMO ACCOUNTS', name: 'Name', permissions: 'Permissions',
+    protected: 'Protected by JWT · RBAC · PII Guardrails',
+    heroTitle: 'Secure Document Indexing & Enterprise Chatbot',
+    heroSub: 'Manage Team Permissions with Role-Based Access Control',
+    feat1Title: 'Safeguard Sensitive Data', feat1Desc: 'Restrict access to confidential documents.',
+    feat2Title: 'Role-Based Access Control', feat2Desc: 'Manage user permissions and access levels.',
+    feat3Title: 'Intelligent RAG Pipeline', feat3Desc: 'Leverage RAG technology for precise document indexing.',
+    chatTitle: 'NexusAI Chat Assistant', chatSub: 'Ask me anything about your company, based on your access rights.',
+    suggestions: 'SUGGESTIONS FOR YOU:', sigOut: 'Sign Out',
+    totalChats: 'Total Chats', totalResponses: 'Total Responses',
+    typeQuestion: 'Type your question and press Enter...', navigation: 'NAVIGATION',
+    usageAnalytics: 'USAGE ANALYTICS', documents: 'Documents', analytics: 'Analytics',
+    chatAssistant: 'Chat Assistant', auditTrail: 'Audit Trail', signInBtn: '→ Sign in to NexusAI',
+    online: 'Online', workspaceTitle: 'Sign in to your workspace',
+    sentiment: 'Sentiment', positive: 'Positive', neutral: 'Neutral', negative: 'Negative',
+  },
+  hi: {
+    signIn: 'NexusAI में साइन इन करें', email: 'ईमेल', password: 'पासवर्ड',
+    emailPh: 'dev@nexus.ai', passwordPh: '••••••••',
+    demoAccounts: 'डेमो अकाउंट', name: 'नाम', permissions: 'अनुमतियां',
+    protected: 'JWT · RBAC · PII गार्डरेल्स द्वारा सुरक्षित',
+    heroTitle: 'सुरक्षित दस्तावेज़ इंडेक्सिंग और एंटरप्राइज़ चैटबॉट',
+    heroSub: 'रोल-बेस्ड एक्सेस कंट्रोल के साथ टीम अनुमतियां प्रबंधित करें',
+    feat1Title: 'संवेदनशील डेटा सुरक्षा', feat1Desc: 'गोपनीय दस्तावेज़ों तक पहुंच सीमित करें।',
+    feat2Title: 'भूमिका-आधारित पहुंच नियंत्रण', feat2Desc: 'उपयोगकर्ता अनुमतियां और स्तर प्रबंधित करें।',
+    feat3Title: 'बुद्धिमान RAG पाइपलाइन', feat3Desc: 'सटीक दस्तावेज़ इंडेक्सिंग के लिए RAG तकनीक।',
+    chatTitle: 'NexusAI चैट असिस्टेंट', chatSub: 'अपनी कंपनी के बारे में कुछ भी पूछें, आपके एक्सेस अधिकारों के आधार पर।',
+    suggestions: 'आपके लिए सुझाव:', sigOut: 'साइन आउट',
+    totalChats: 'कुल चैट', totalResponses: 'कुल उत्तर',
+    typeQuestion: 'अपना प्रश्न टाइप करें और Enter दबाएं...', navigation: 'नेविगेशन',
+    usageAnalytics: 'उपयोग विश्लेषण', documents: 'दस्तावेज़', analytics: 'विश्लेषण',
+    chatAssistant: 'चैट असिस्टेंट', auditTrail: 'ऑडिट ट्रेल', signInBtn: '→ NexusAI में साइन इन करें',
+    online: 'ऑनलाइन', workspaceTitle: 'अपने वर्कस्पेस में साइन इन करें',
+    sentiment: 'भावना', positive: 'सकारात्मक', neutral: 'तटस्थ', negative: 'नकारात्मक',
+  },
+  ta: {
+    signIn: 'NexusAI-ல் உள்நுழைக', email: 'மின்னஞ்சல்', password: 'கடவுச்சொல்',
+    emailPh: 'dev@nexus.ai', passwordPh: '••••••••',
+    demoAccounts: 'டெமோ கணக்குகள்', name: 'பெயர்', permissions: 'அனுமதிகள்',
+    protected: 'JWT · RBAC · PII கார்டுரெய்ல்கள் மூலம் பாதுகாக்கப்பட்டது',
+    heroTitle: 'பாதுகாப்பான ஆவண அட்டவணை & நிறுவன சாட்பாட்',
+    heroSub: 'பாத்திரம் அடிப்படையிலான அணுகல் கட்டுப்பாட்டுடன் குழு அனுமதிகளை நிர்வகிக்கவும்',
+    feat1Title: 'தரவு பாதுகாப்பு', feat1Desc: 'ரகசிய ஆவணங்களுக்கான அணுகலை கட்டுப்படுத்துங்கள்.',
+    feat2Title: 'பாத்திர அடிப்படையிலான அணுகல்', feat2Desc: 'பயனர் அனுமதிகளை நிர்வகிக்கவும்.',
+    feat3Title: 'தெளிவான RAG குழாய்', feat3Desc: 'துல்லியமான ஆவண அட்டவணைக்கு RAG தொழில்நுட்பம்.',
+    chatTitle: 'NexusAI அரட்டை உதவியாளர்', chatSub: 'உங்கள் நிறுவனத்தைப் பற்றி எதையும் கேளுங்கள்.',
+    suggestions: 'உங்களுக்கான பரிந்துரைகள்:', sigOut: 'வெளியேறு',
+    totalChats: 'மொத்த அரட்டைகள்', totalResponses: 'மொத்த பதில்கள்',
+    typeQuestion: 'உங்கள் கேள்வியை தட்டச்சு செய்யுங்கள்...', navigation: 'வழிசெலுத்தல்',
+    usageAnalytics: 'பயன்பாட்டு பகுப்பாய்வு', documents: 'ஆவணங்கள்', analytics: 'பகுப்பாய்வு',
+    chatAssistant: 'அரட்டை உதவியாளர்', auditTrail: 'தணிக்கை பாதை', signInBtn: '→ NexusAI-ல் உள்நுழைக',
+    online: 'ஆன்லைன்', workspaceTitle: 'உங்கள் பணியிடத்தில் உள்நுழைக',
+    sentiment: 'உணர்வு', positive: 'நேர்மறை', neutral: 'நடுநிலை', negative: 'எதிர்மறை',
+  },
+}
+
+export function useTranslation(lang) {
+  return T[lang] || T.en
+}
