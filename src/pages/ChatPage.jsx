@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { Send, Bot, AlertTriangle, Cpu, Clock, FileText, Sparkles, Trash2, Mic, MicOff } from 'lucide-react'
-import { chatAPI } from '../utils/api'
+import { chatAPI, wakeUpBackend } from '../utils/api'
 import { useAuthStore, useChatStore, useAuditStore, useLangStore } from '../store/useStore'
 import { useTranslation } from '../utils/i18n'
 import ReactMarkdown from 'react-markdown'
@@ -118,6 +118,7 @@ export default function ChatPage() {
   const [query, setQuery]         = useState('')
   const [loading, setLoading]     = useState(false)
   const [isListening, setIsListening] = useState(false)
+  const [isWakingUp, setIsWakingUp] = useState(false)
   const [voiceError, setVoiceError]   = useState('')
   const endRef     = useRef(null)
   const inputRef   = useRef(null)
@@ -162,6 +163,12 @@ export default function ChatPage() {
     const text = (override || query).trim()
     if (!text || loading) return
     setQuery('')
+    // Wake up Render if this is the first message (server may be sleeping)
+    if (messages.length === 0) {
+      setIsWakingUp(true)
+      await wakeUpBackend()
+      setIsWakingUp(false)
+    }
     inputRef.current?.focus()
     const ts = new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})
     addMessage({ role:'user', content:text, time:ts })
@@ -179,7 +186,12 @@ export default function ChatPage() {
         addLog({ action:'QUERY', user:user?.email, role:user?.role, detail:`${text.slice(0,60)}... | ${data.tokens}t`, timestamp:new Date().toISOString() })
       }
     } catch (err) {
-      addMessage({ role:'assistant', content:'⚠ Connection error. Make sure the backend is running on port 8000.', sources:[], tokens:0, latency:0, blocked:true, time:ts })
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+      const isLocal = apiUrl.includes('localhost')
+      const errMsg = isLocal
+        ? '⚠ Connection error. Make sure the backend is running: cd backend && uvicorn app.main:app --reload'
+        : '⚠ Server timed out (Render free tier 30s limit). Please try again — the server wakes up in ~30 seconds.'
+      addMessage({ role:'assistant', content:errMsg, sources:[], tokens:0, latency:0, blocked:true, time:ts })
     } finally { setLoading(false) }
   }
 

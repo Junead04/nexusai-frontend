@@ -41,3 +41,14 @@ export const docsAPI = {
 }
 
 export default api
+
+// ── Wake up Render before sending requests ──────────────────────
+// Render free tier sleeps after 15min inactivity. This pings it first.
+export async function wakeUpBackend() {
+  try {
+    await api.get('/ping', { timeout: 45000 })
+    return true
+  } catch {
+    return false  // Will try the actual request anyway
+  }
+}
