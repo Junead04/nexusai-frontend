@@ -136,27 +136,74 @@ export default function ChatPage() {
 
   function startVoice() {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition
-    if (!SR) { setVoiceError('Voice not supported. Use Chrome or Edge.'); setTimeout(()=>setVoiceError(''),4000); return }
-    if (isListening) { recognitionRef.current?.stop(); setIsListening(false); return }
+    if (!SR) {
+      setVoiceError('Voice not supported. Please use Chrome browser.')
+      setTimeout(()=>setVoiceError(''),5000)
+      return
+    }
+    // Stop if already listening
+    if (isListening) {
+      recognitionRef.current?.stop()
+      setIsListening(false)
+      return
+    }
     const rec = new SR()
     recognitionRef.current = rec
-    rec.continuous = false; rec.interimResults = false; rec.lang = 'en-US'
-    rec.onstart  = () => { setIsListening(true); setVoiceError('') }
+    // Settings optimised for Indian English accent
+    rec.continuous       = true   // keep listening until user stops
+    rec.interimResults   = true   // show words as they are spoken
+    rec.lang             = 'en-IN' // Indian English — better accent match
+    rec.maxAlternatives  = 1
+
+    let finalTranscript = ''
+
+    rec.onstart = () => {
+      setIsListening(true)
+      setVoiceError('')
+      finalTranscript = ''
+    }
+
     rec.onresult = (e) => {
-      const transcript = e.results[0][0].transcript
-      setIsListening(false)
-      setQuery(transcript)
-      setTimeout(() => sendMsg(transcript), 200)
+      let interim = ''
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        const t = e.results[i][0].transcript
+        if (e.results[i].isFinal) finalTranscript += t + ' '
+        else interim += t
+      }
+      // Show interim results in the input box
+      setQuery((finalTranscript + interim).trim())
     }
-    rec.onerror  = (e) => {
+
+    rec.onerror = (e) => {
       setIsListening(false)
-      if (e.error==='not-allowed') setVoiceError('Microphone permission denied.')
-      else if (e.error==='no-speech') setVoiceError('No speech detected. Try again.')
-      else setVoiceError(`Voice error: ${e.error}`)
-      setTimeout(()=>setVoiceError(''),4000)
+      if (e.error === 'not-allowed') {
+        setVoiceError('❌ Mic blocked. Click the camera icon in address bar → Allow Microphone → refresh page.')
+      } else if (e.error === 'no-speech') {
+        setVoiceError('🎤 No speech heard. Speak louder or closer to the mic.')
+      } else if (e.error === 'network') {
+        setVoiceError('🌐 Voice needs internet connection. Check your network.')
+      } else {
+        setVoiceError(`Voice error: ${e.error}. Try refreshing the page.`)
+      }
+      setTimeout(()=>setVoiceError(''), 6000)
     }
-    rec.onend = () => setIsListening(false)
-    rec.start()
+
+    rec.onend = () => {
+      setIsListening(false)
+      // Auto-send if we captured something
+      const captured = finalTranscript.trim()
+      if (captured && captured.length > 1) {
+        setQuery(captured)
+        setTimeout(() => sendMsg(captured), 300)
+      }
+    }
+
+    try {
+      rec.start()
+    } catch(err) {
+      setVoiceError('Could not start microphone. Refresh the page and try again.')
+      setTimeout(()=>setVoiceError(''), 5000)
+    }
   }
 
   async function sendMsg(override) {
@@ -287,7 +334,7 @@ export default function ChatPage() {
         {isListening && (
           <div style={{ marginBottom:7, padding:'6px 11px', borderRadius:7, background:'#fef2f2', border:'1px solid #fecaca', color:'#dc2626', fontSize:11, display:'flex', alignItems:'center', gap:7 }}>
             <span style={{ width:7, height:7, borderRadius:'50%', background:'#f87171', display:'inline-block', animation:'pulseDot 0.7s ease-in-out infinite' }}/>
-            Listening... speak your question — it will auto-send when done
+            🎤 Listening... speak now. Click mic again to stop and send.
           </div>
         )}
         <div style={{ display:'flex', gap:8, alignItems:'center' }}>
@@ -318,7 +365,7 @@ export default function ChatPage() {
         <p style={{ fontSize:10, fontFamily:'monospace', color:'#9ca3af', marginTop:7, display:'flex', alignItems:'center', gap:8 }}>
           💡 Simple QA · LLaMa 3.1 8B · Complex/Financial · LLaMa 3.3 70B · Auto-routed
           <span style={{ color:'rgba(255,255,255,0.12)' }}>|</span>
-          <span style={{ color:'rgba(220,38,38,0.6)' }}>🎤 Click mic to speak</span>
+          <span style={{ color:'rgba(220,38,38,0.6)' }}>🎤 Click mic → speak → click again to send</span>
         </p>
       </div>
 
